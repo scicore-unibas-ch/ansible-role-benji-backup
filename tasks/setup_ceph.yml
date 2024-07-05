@@ -1,0 +1,41 @@
+---
+
+- name: Configure ceph apt repositories
+  when: benji_backup_add_ceph_apt_repos
+  block:
+
+    - name: Import ceph apt key
+      ansible.builtin.apt_key:
+        url: https://download.ceph.com/keys/release.asc
+        state: present
+
+    - name: Add the ceph apt repository
+      ansible.builtin.apt_repository:
+        repo: "deb https://download.ceph.com/debian-{{ benji_backups_ceph_apt_repos_version }}/ {{ ansible_distribution_release }} main"
+        filename: ceph
+        update_cache: true
+        state: present
+
+- name: Install ceph-common
+  ansible.builtin.apt:
+    name: ceph-common
+    cache_valid_time: 300
+  tags: ceph-common
+
+- name: Setup rbd configuration
+  ansible.builtin.template:
+    src: ceph.conf.j2
+    dest: /etc/ceph/ceph.conf
+    owner: root
+    group: root
+    mode: 0644
+  tags: rbd
+
+- name: Setup rbd keyring
+  ansible.builtin.template:
+    src: ceph.keyring.j2
+    dest: "/etc/ceph/ceph.client.{{ benji_backup_cephrbd_client.name }}.keyring"
+    owner: root
+    group: root
+    mode: 0400
+  tags: rbd

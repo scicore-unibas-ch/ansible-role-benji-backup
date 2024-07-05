@@ -1,0 +1,4 @@
+# minimal ceph.conf for {{ benji_backup_cephrbd_client.fsid }}
+[global]
+    fsid = {{ benji_backup_cephrbd_client.fsid }}
+    mon_host = [v2:{{ benji_backup_rbd_ceph_monitors[0] }}:{{ benji_backup_v2_ceph_port }}/0,v1:{{ benji_backup_rbd_ceph_monitors[0] }}:{{ benji_backup_v1_ceph_port }}/0] [v2:{{ benji_backup_rbd_ceph_monitors[1] }}:{{ benji_backup_v2_ceph_port }}/0,v1:{{ benji_backup_rbd_ceph_monitors[1] }}:{{ benji_backup_v1_ceph_port }}/0] [v2:{{ benji_backup_rbd_ceph_monitors[2] }}:{{ benji_backup_v2_ceph_port }}/0,v1:{{ benji_backup_rbd_ceph_monitors[2] }}:{{ benji_backup_v1_ceph_port }}/0]

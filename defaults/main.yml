@@ -1,0 +1,23 @@
+---
+
+benji_backup_add_ceph_apt_repos: true
+
+# What ceph apt repos to add. Check ceph release names in
+# https://docs.ceph.com/en/latest/releases/#ceph-releases-index
+benji_backups_ceph_apt_repos_version: reef
+
+benji_backup_v1_ceph_port: "6789"
+benji_backup_v2_ceph_port: "3300"
+
+benji_backup_rbd_ceph_monitors:
+  - "172.16.5.14"
+  - "172.16.5.15"
+  - "172.16.5.16"
+
+## RBD client to access your ceph cluster
+benji_backup_cephrbd_client:
+  name: "benji"
+  fsid: "xxxxxxxxxxxxxxxxxxxxxxxxx"
+  key: "yyyyyyyyyyyyyyyyyyyyyyyyy"
+
+#benji_source_name: "rbd"
