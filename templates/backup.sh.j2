@@ -1,0 +1,8 @@
+#!/bin/bash
+
+. ceph.sh
+
+POOL="$1"
+VOLUME="$2"
+CLIENT="client.{{ benji_backup_cephrbd_client.name }}"
+benji::backup::ceph $POOL/$VOLUME $POOL $VOLUME $CLIENT

@@ -1,0 +1,6 @@
+#!/bin/bash
+
+POOL="$1"
+VOLUME="$2"
+
+docker exec {{ benji_backup_container_name }} backup.sh $POOL $VOLUME

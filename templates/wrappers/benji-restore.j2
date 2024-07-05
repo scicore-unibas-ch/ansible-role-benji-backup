@@ -1,0 +1,16 @@
+#!/bin/bash
+
+if [ "$1" = "-f" ]; then
+    # If the force flag exists, put it into the wrapped command
+    FORCE="$1"
+    VOLUME_UID="$2"
+    POOL="$3"
+    VOLUME="$4"
+    docker exec {{ benji_backup_container_name }} benji restore $FORCE -s $VOLUME_UID rbd:$POOL/$VOLUME
+else
+    # Else use the command straight, as described in the wiki
+    VOLUME_UID="$1"
+    POOL="$2"
+    VOLUME="$3"
+    docker exec {{ benji_backup_container_name }} benji restore -s $VOLUME_UID rbd:$POOL/$VOLUME
+fi

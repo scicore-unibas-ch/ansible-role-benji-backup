@@ -1,0 +1,32 @@
+version: '3.5'
+services:
+  backup:
+    container_name: {{ benji_backup_container_name }}
+    image: {{ benji_backup_container_base_image }}:{{ benji_backup_container_tag }}
+    restart: unless-stopped
+    tty: true
+    volumes:
+      - /etc/ceph:/etc/ceph
+      - {{ benji_backup_backups_destination_path }}:{{ benji_backup_backups_destination_path }}
+      - {{ benji_backup_base_path }}/config/benji.yaml:/benji/etc/benji.yaml
+      - {{ benji_backup_base_path }}/logs:/benji/logs
+      - {{ benji_backup_base_path }}/config/ceph.sh:/usr/local/bin/ceph.sh
+      - {{ benji_backup_base_path }}/config/backup.sh:/usr/local/bin/backup.sh
+
+  postgres:
+    container_name: {{ benji_backup_postgresql_container_name }}
+    image: {{ benji_backup_postgresql_container_image }}:{{ benji_backup_postgresql_container_tag }}
+    restart: unless-stopped
+    environment:
+      - "POSTGRES_DB={{ benji_backup_postgresql_db }}"
+      - "POSTGRES_USER={{ benji_backup_postgresql_user }}"
+      - "POSTGRES_PASSWORD={{ benji_backup_postgresql_password }}"
+    volumes:
+      - {{ benji_backup_base_path }}/postgresql/data:/var/lib/postgresql/data
+      - {{ benji_backup_backups_destination_path }}/pgsql:{{ benji_backup_backups_destination_path }}/pgsql
+
+networks:
+  default:
+    driver: bridge
+    driver_opts:
+      com.docker.network.driver.mtu: {{ benji_backup_container_network_mtu }}

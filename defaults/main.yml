@@ -20,4 +20,43 @@ benji_backup_cephrbd_client:
   fsid: "xxxxxxxxxxxxxxxxxxxxxxxxx"
   key: "yyyyyyyyyyyyyyyyyyyyyyyyy"
 
-#benji_source_name: "rbd"
+# Here we deploy all the config files and logs
+benji_backup_base_path: "/opt/benji"
+
+benji_backup_dirs:
+  - "{{ benji_backup_base_path }}"
+  - "{{ benji_backup_base_path }}/config"
+  - "{{ benji_backup_base_path }}/logs"
+  - "{{ benji_backup_base_path }}/scripts"
+  - "{{ benji_backup_base_path }}/postgresql"
+  - "{{ benji_backup_base_path }}/postgresql/data"
+  - "{{ benji_backup_backups_destination_path }}/pgsql"
+
+# these are some wrappers we deploy in the host to execute
+# benji commands inside the containers
+benji_backup_wrappers:
+  - { name: "benji-list", dest: "/usr/local/bin/benji-list" }
+  - { name: "benji-restore", dest: "/usr/local/bin/benji-restore" }
+  - { name: "benji-backup", dest: "/usr/local/bin/benji-backup" }
+  - { name: "benji-usage", dest: "/usr/local/bin/benji-usage" }
+  # this one is copied in a dedicated task
+  # - { name: "backup.sh", dest: "{{ benji_backup_base_path }}/config/backup.sh" }
+
+benji_backup_container_base_image: ghcr.io/elemental-lf/benji
+benji_backup_container_tag: 0.17.0
+benji_backup_container_name: benji-backup
+benji_backup_container_network_mtu: 8950
+
+benji_backup_docker_compose_project_name: benji-backup
+benji_backup_postgresql_container_name: "{{ benji_backup_docker_compose_project_name }}-postgres"
+## PGSQL configuration
+benji_backup_postgresql_container_image: postgres
+benji_backup_postgresql_container_tag: 15
+benji_backup_postgresql_user: "benji"
+benji_backup_postgresql_db: "benji-backup"
+benji_backup_postgresql_password: "asd23w45234asddf235fas"
+
+benji_backup_source_name: "ceph-rbd"
+benji_backup_destination_name: "backups-destination"
+# Here we store all our backups
+benji_backup_backups_destination_path: "/backups"

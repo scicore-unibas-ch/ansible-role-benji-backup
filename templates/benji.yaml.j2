@@ -1,0 +1,20 @@
+configurationVersion: '1'
+databaseEngine: postgresql://{{ benji_backup_postgresql_user }}:{{ benji_backup_postgresql_password }}@postgres:5432/{{ benji_backup_postgresql_db }}
+defaultStorage: {{ benji_backup_destination_name }}
+logFile: /benji/logs/benji.log
+storages:
+  - name: {{ benji_backup_destination_name }}
+    storageId: 1
+    module: file
+    configuration:
+      simultaneousReads: 10
+      simultaneousWrites: 10
+      path: {{ benji_backup_backups_destination_path }}
+ios:
+  - name: {{ benji_backup_source_name }}
+    module: rbd
+    configuration:
+      simultaneousReads: 10
+      simultaneousWrites: 10
+      cephConfigFile: /etc/ceph/ceph.conf
+      clientIdentifier: {{ benji_backup_cephrbd_client.name }}
