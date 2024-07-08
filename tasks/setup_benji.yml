@@ -103,20 +103,21 @@
     mode: 0644
   tags: benji-conf
 
-
 - name: Boot the containers
   community.docker.docker_compose:
     project_src: "{{ benji_backup_base_path }}/config"
   vars:
     ansible_python_interpreter: "{{ local_venv_ansible_docker_compose }}/bin/python"
+  register: _containers_boot
 
-# - name: Start the containers
-#   ansible.builtin.shell:
-#     #cmd: "docker compose -p {{ benji_project_name }} -f {{ benji_base_path }}/config/docker-compose.yml up -d"
-#     cmd: "docker-compose -p {{ benji_project_name }} -f {{ benji_base_path }}/config/docker-compose.yml up -d"
-#   tags: benji-init
+- name: Wait 10secs to let postgres boot if this is the first time it boots
+  ansible.builtin.pause:
+    seconds: 10
+  when: _containers_boot.changed
+  tags:
+    - skip_ansible_lint
 
-- name: Init benji database (subsequent runs will fail and it's OK)
+- name: Init benji database
   ansible.builtin.shell:
     cmd: "docker exec {{ benji_backup_container_name }} benji database-init && touch {{ benji_backup_postgres_data_dir }}/../benji_db_initialized"
     creates: "{{ benji_backup_postgres_data_dir }}/../benji_db_initialized"
