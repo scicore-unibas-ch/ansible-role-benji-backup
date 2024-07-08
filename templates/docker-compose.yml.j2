@@ -12,6 +12,7 @@ services:
       - {{ benji_backup_base_path }}/logs:/benji/logs
       - {{ benji_backup_base_path }}/config/ceph.sh:/usr/local/bin/ceph.sh
       - {{ benji_backup_base_path }}/config/backup.sh:/usr/local/bin/backup.sh
+      - /etc/localtime:/etc/localtime:ro
 
   postgres:
     container_name: {{ benji_backup_postgresql_container_name }}
@@ -24,6 +25,7 @@ services:
     volumes:
       - {{ benji_backup_base_path }}/postgresql/data:/var/lib/postgresql/data
       - {{ benji_backup_backups_destination_path }}/pgsql:{{ benji_backup_backups_destination_path }}/pgsql
+      - /etc/localtime:/etc/localtime:ro
 
 networks:
   default:
