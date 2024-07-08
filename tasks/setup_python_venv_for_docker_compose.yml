@@ -1,0 +1,25 @@
+---
+
+- name: Install python3-virtualenv
+  ansible.builtin.apt:
+    name: python3-virtualenv
+    cache_valid_time: 600
+
+- name: Create the virtualenv for the ansible docker-compose module
+  ansible.builtin.pip:
+    name:
+      - pip>23.2.0
+      - setuptools>68.1.0
+      - requests<=2.31.0
+      - pyyaml==5.3.1  # docker-compose requires pyyaml<6.0 but 5.4.1 doesn't build on ubuntu22.04?
+      - docker==6.1.3  # docker version 7.0.0 breaks docker-compose.v1
+    virtualenv: "{{ benji_backup_venv_ansible_docker_compose }}"
+
+- name: Query list of installed packages
+  ansible.builtin.package_facts:
+    manager: auto
+
+- name: Install the docker-compose python library inside the venv (aligned with the installed docker daemon)
+  ansible.builtin.pip:
+    name: "docker-compose=={{ ansible_facts.packages['docker-compose'][0].version.split('-')[0] }}"
+    virtualenv: "{{ benji_backup_venv_ansible_docker_compose }}"

@@ -5,5 +5,8 @@
   tags:
     - ceph
 
+- name: Create a python venv for ansible module community.docker.docker_compose
+  ansible.builtin.import_tasks: setup_python_venv_for_docker_compose.yml
+
 - name: Setup benji
   ansible.builtin.import_tasks: setup_benji.yml
