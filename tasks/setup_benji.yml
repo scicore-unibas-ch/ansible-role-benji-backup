@@ -16,7 +16,7 @@
   ansible.builtin.file:
     path: "{{ benji_backup_postgres_data_dir }}"
     state: directory
-    mode: 0750
+    mode: 0700
     owner: 999
     group: 999
   tags: benji-dirs
