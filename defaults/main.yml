@@ -68,3 +68,7 @@ benji_backup_postgresql_backup_command: "docker exec {{ benji_backup_postgresql_
 benji_backup_postgresql_schedule:
   minute: 0
   hour: 1
+
+# this usually points to a python venv with the docker-compose library installed
+# so it can be used with the ansible module community.docker.docker_compose
+benji_backup_python_interpreter_docker_compose: /usr/bin/python3

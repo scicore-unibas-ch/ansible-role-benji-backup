@@ -7,6 +7,9 @@ Deploy benji backup using docker containers.
 
 This role assumes docker daemon is already installed in the destination host.
 
+You also need the ansible collection `community.docker.docker_compose`.  You
+can install it with `ansible-galaxy collection install community.docker`)
+
 
 # Some examples
 
