@@ -82,6 +82,7 @@
     owner: root
     group: root
     mode: 0644
+  notify: Restart the containers
   tags: benji-conf
 
 - name: Boot the containers

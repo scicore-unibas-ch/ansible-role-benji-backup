@@ -1,2 +1,9 @@
 ---
 # handlers file for roles/scicore.benji-backup
+
+- name: Restart the containers
+  community.docker.docker_compose:
+    project_src: "{{ benji_backup_base_path }}/config"
+    state: restarted
+  vars:
+    ansible_python_interpreter: "{{ benji_backup_python_interpreter_docker_compose }}"
