@@ -1,0 +1,12 @@
+{{ benji_backup_base_path }}/logs/benji.log
+{
+    copytruncate
+    missingok
+    compress
+    compressext .gz
+    dateformat .%Y-%m-%d
+    dateext
+    notifempty
+    rotate 10000000000
+    daily
+}

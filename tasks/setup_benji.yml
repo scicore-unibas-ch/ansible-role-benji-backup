@@ -21,23 +21,22 @@
     group: 999
   tags: benji-dirs
 
-# - name: Create logfile
-#   ansible.builtin.file:
-#     path: "{{ benji_base_path }}/logs/benji.log"
-#     state: touch
-#     mode: 0644
-#     owner: root
-#     group: root
-#   tags: benji-logs
+- name: Create logfile
+  ansible.builtin.file:
+    path: "{{ benji_backup_base_path }}/logs/benji.log"
+    mode: 0644
+    owner: root
+    group: root
+  tags: benji-logs
 
-# - name: Setup daily logrotate
-#   ansible.builtin.template:
-#     src: benji-logrotate.j2
-#     dest: "/etc/logrotate.d/benji"
-#     owner: root
-#     group: root
-#     mode: 0644
-#   tags: benji-logs
+- name: Setup daily logrotate
+  ansible.builtin.template:
+    src: benji-logrotate.j2
+    dest: "/etc/logrotate.d/benji"
+    owner: root
+    group: root
+    mode: 0644
+  tags: benji-logs
 
 # - name: Create postgresql backup script
 #   ansible.builtin.template:
