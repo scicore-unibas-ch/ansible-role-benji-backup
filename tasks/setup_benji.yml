@@ -12,6 +12,15 @@
     loop_var: directory
   tags: benji-dirs
 
+- name: Create the directory for postgres data
+  ansible.builtin.file:
+    path: "{{ benji_backup_postgres_data_dir }}"
+    state: directory
+    mode: 0755
+    owner: 999
+    group: 999
+  tags: benji-dirs
+
 # - name: Create logfile
 #   ansible.builtin.file:
 #     path: "{{ benji_base_path }}/logs/benji.log"

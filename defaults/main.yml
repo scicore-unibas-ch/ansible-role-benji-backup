@@ -30,7 +30,8 @@ benji_backup_dirs:
   - "{{ benji_backup_base_path }}/scripts"
   - "{{ benji_backup_base_path }}/postgresql"
   - "{{ benji_backup_base_path }}/postgresql/data"
-  - "{{ benji_backup_backups_destination_path }}/pgsql"
+
+benji_backup_postgres_data_dir: "{{ benji_backup_backups_destination_path }}/pgsql"
 
 # these are some wrappers we deploy in the host to execute
 # benji commands inside the containers
