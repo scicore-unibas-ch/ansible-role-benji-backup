@@ -62,9 +62,9 @@ benji_backup_destination_name: "backups-destination"
 benji_backup_backups_destination_path: "/backups/benji"
 
 ## PGSQL backup command, script and schedule
-benji_backup_postgresql_gz: "{{ benji_backup_backups_destination_path }}/pgsql/{{ benji_backup_postgresql_db }}-$(date +%Y-%m-%d-%H-%M-%S).gz"
+benji_backup_postgresql_gz: "{{ benji_backup_backups_destination_path }}/pgsql/{{ benji_backup_postgresql_db }}-$(date +%Y-%m-%d-%H-%M-%S).sql.gz"
 benji_backup_postgresql_backup_script: "{{ benji_backup_base_path }}/scripts/pgsql_dump.sh"
-benji_backup_postgresql_backup_command: "docker exec {{ benji_backup_postgresql_container_name }} pg_dump -U {{ benji_backup_postgresql_user }} | gzip -c  > {{ benji_backup_postgresql_gz }}"
+benji_backup_postgresql_backup_command: "docker exec {{ benji_backup_postgresql_container_name }} pg_dump -U {{ benji_backup_postgresql_user }} {{ benji_backup_postgresql_db }} | gzip -c  > {{ benji_backup_postgresql_gz }}"
 benji_backup_postgresql_schedule:
   minute: 0
   hour: 1
