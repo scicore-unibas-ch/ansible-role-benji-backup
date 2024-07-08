@@ -56,7 +56,6 @@ benji_backup_postgresql_user: "benji"
 benji_backup_postgresql_db: "benji-backup"
 benji_backup_postgresql_password: "asd23w45234asddf235fas"
 
-benji_backup_source_name: "ceph-rbd"
 benji_backup_destination_name: "backups-destination"
 # Here we store all our backups
 benji_backup_backups_destination_path: "/backups"
