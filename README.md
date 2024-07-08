@@ -26,9 +26,7 @@ volume-e30044c2-61b7-40c3-805c-26a7ece9b2fb
 ```
 $1 = ceph pool
 $2 = volume name
-```
 
-```
 $> benji-backup volumes volume-29c99562-9882-481f-aecc-d5b2d104057a
 ```
 
@@ -62,6 +60,6 @@ e30044c2-61b7-40c3-805c-26a7ece9b2fb
 $1 = benji backup uid (get it using benji-list)
 $2 = destination ceph pool
 $3 = volume name (this must exist in the pool and it will be overriden with the backup data)
-```
 
-`$> benji-restore -f volumes/volume-29c99562-9882-481f-aecc-d5b2d104057a-t6ueth volumes e30044c2-61b7-40c3-825c-24a7e4ee9b2fb`
+$> benji-restore -f volumes/volume-29c99562-9882-481f-aecc-d5b2d104057a-t6ueth volumes e30044c2-61b7-40c3-825c-24a7e4ee9b2fb
+```
