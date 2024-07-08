@@ -1,25 +1,35 @@
 ---
 
-- name: Create all the required directories
-  ansible.builtin.file:
-    path: "{{ directory }}"
-    state: directory
-    mode: 0755
-    owner: root
-    group: root
-  loop: "{{ benji_backup_dirs }}"
-  loop_control:
-    loop_var: directory
+- name: Create the required directories
   tags: benji-dirs
+  block:
 
-- name: Create the directory for postgres data
-  ansible.builtin.file:
-    path: "{{ benji_backup_postgres_data_dir }}"
-    state: directory
-    mode: 0700
-    owner: 999
-    group: 999
-  tags: benji-dirs
+    - name: Create folder for configs and logs
+      ansible.builtin.file:
+        path: "{{ directory }}"
+        state: directory
+        mode: 0755
+        owner: root
+        group: root
+      loop: "{{ benji_backup_dirs }}"
+      loop_control:
+        loop_var: directory
+
+    - name: Create the directory for postgres data
+      ansible.builtin.file:
+        path: "{{ benji_backup_postgres_data_dir }}"
+        state: directory
+        mode: 0700
+        owner: 999
+        group: 999
+
+    - name: Create the destination directory for backups
+      ansible.builtin.file:
+        path: "{{ benji_backup_backups_destination_path }}"
+        state: directory
+        mode: 0700
+        owner: root
+        group: root
 
 - name: Create logfile
   ansible.builtin.file:
@@ -38,24 +48,24 @@
     mode: 0644
   tags: benji-logs
 
-# - name: Create postgresql backup script
-#   ansible.builtin.template:
-#     src: pgsql_dump.sh.j2
-#     dest: "{{ benji_postgresql_backup_script }}"
-#     owner: root
-#     group: root
-#     mode: 0755
-#   tags: pgsql-scripts
+- name: Create postgresql backup script
+  ansible.builtin.template:
+    src: pgsql_dump.sh.j2
+    dest: "{{ benji_backup_postgresql_backup_script }}"
+    owner: root
+    group: root
+    mode: 0755
+  tags: pgsql-scripts
 
-# - name: Create postgresql backup cron entry
-#   ansible.builtin.cron:
-#     name: "postgresql dump"
-#     minute: "{{ benji_postgresql_schedule.minute }}"
-#     hour: "{{ benji_postgresql_schedule.hour }}"
-#     user: root
-#     job: "/opt/benji/scripts/pgsql_dump.sh"
-#     cron_file: pgsql_backup
-#   tags: pgsql-scripts
+- name: Create postgresql backup cron entry
+  ansible.builtin.cron:
+    name: "benji postgresql dump"
+    minute: "{{ benji_backup_postgresql_schedule.minute }}"
+    hour: "{{ benji_backup_postgresql_schedule.hour }}"
+    user: root
+    job: "{{ benji_backup_base_path }}/scripts/pgsql_dump.sh"
+    cron_file: pgsql_backup
+  tags: pgsql-scripts
 
 - name: Deploy ceph.sh script from benji repo
   ansible.builtin.copy:
