@@ -16,7 +16,7 @@
   ansible.builtin.file:
     path: "{{ benji_backup_postgres_data_dir }}"
     state: directory
-    mode: 0755
+    mode: 0750
     owner: 999
     group: 999
   tags: benji-dirs
@@ -118,5 +118,6 @@
 
 - name: Init benji database (subsequent runs will fail and it's OK)
   ansible.builtin.shell:
-    cmd: "docker exec {{ benji_backup_container_name }} benji database-init"
+    cmd: "docker exec {{ benji_backup_container_name }} benji database-init && touch {{ benji_backup_postgres_data_dir }}/../benji_db_initialized"
+    creates: "{{ benji_backup_postgres_data_dir }}/../benji_db_initialized"
   ignore_errors: true
