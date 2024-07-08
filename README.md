@@ -27,7 +27,7 @@ volume-e30044c2-61b7-40c3-805c-26a7ece9b2fb
 $1 = ceph pool
 $2 = volume name
 
-$> benji-backup volumes volume-29c99562-9882-481f-aecc-d5b2d104057a
+$> benji-backup volumes 29c99562-9882-481f-aecc-d5b2d104057a
 ```
 
 ## Restore a volume 

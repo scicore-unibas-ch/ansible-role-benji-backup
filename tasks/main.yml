@@ -1,16 +1,9 @@
 ---
 
 - name: Setup ceph
-  ansible.builtin.include_tasks: setup_ceph.yml
+  ansible.builtin.import_tasks: setup_ceph.yml
   tags:
     - ceph
 
 - name: Setup benji
-  ansible.builtin.include_tasks: setup_benji.yml
-  tags:
-    - benji-dirs
-    - benji-logs
-    - pgsql-scripts
-    - benji-scripts
-    - benji-conf
-    - benji-init
+  ansible.builtin.import_tasks: setup_benji.yml

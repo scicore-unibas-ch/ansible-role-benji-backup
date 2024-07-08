@@ -31,24 +31,13 @@
         owner: root
         group: root
 
-- name: Configure benji logs and logrotate
-  tags: benji-logs
-  block:
-
-    - name: Create logfile
-      ansible.builtin.file:
-        path: "{{ benji_backup_base_path }}/logs/benji.log"
-        mode: 0644
-        owner: root
-        group: root
-
-    - name: Setup daily logrotate
-      ansible.builtin.template:
-        src: benji-logrotate.j2
-        dest: "/etc/logrotate.d/benji"
-        owner: root
-        group: root
-        mode: 0644
+- name: Setup benji logs logrotate
+  ansible.builtin.template:
+    src: benji-logrotate.j2
+    dest: "/etc/logrotate.d/benji"
+    owner: root
+    group: root
+    mode: 0644
 
 - name: Configure postgresql backup
   tags: pgsql-scripts
@@ -70,7 +59,6 @@
         user: root
         job: "{{ benji_backup_base_path }}/scripts/pgsql_dump.sh"
         cron_file: pgsql_backup
-      tags: pgsql-scripts
 
 - name: Deploy ceph.sh script from benji repo
   ansible.builtin.copy:
