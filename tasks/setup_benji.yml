@@ -31,41 +31,46 @@
         owner: root
         group: root
 
-- name: Create logfile
-  ansible.builtin.file:
-    path: "{{ benji_backup_base_path }}/logs/benji.log"
-    mode: 0644
-    owner: root
-    group: root
+- name: Configure benji logs and logrotate
   tags: benji-logs
+  block:
 
-- name: Setup daily logrotate
-  ansible.builtin.template:
-    src: benji-logrotate.j2
-    dest: "/etc/logrotate.d/benji"
-    owner: root
-    group: root
-    mode: 0644
-  tags: benji-logs
+    - name: Create logfile
+      ansible.builtin.file:
+        path: "{{ benji_backup_base_path }}/logs/benji.log"
+        mode: 0644
+        owner: root
+        group: root
 
-- name: Create postgresql backup script
-  ansible.builtin.template:
-    src: pgsql_dump.sh.j2
-    dest: "{{ benji_backup_postgresql_backup_script }}"
-    owner: root
-    group: root
-    mode: 0755
+    - name: Setup daily logrotate
+      ansible.builtin.template:
+        src: benji-logrotate.j2
+        dest: "/etc/logrotate.d/benji"
+        owner: root
+        group: root
+        mode: 0644
+
+- name: Configure postgresql backup
   tags: pgsql-scripts
+  block:
 
-- name: Create postgresql backup cron entry
-  ansible.builtin.cron:
-    name: "benji postgresql dump"
-    minute: "{{ benji_backup_postgresql_schedule.minute }}"
-    hour: "{{ benji_backup_postgresql_schedule.hour }}"
-    user: root
-    job: "{{ benji_backup_base_path }}/scripts/pgsql_dump.sh"
-    cron_file: pgsql_backup
-  tags: pgsql-scripts
+    - name: Create postgresql backup script
+      ansible.builtin.template:
+        src: pgsql_dump.sh.j2
+        dest: "{{ benji_backup_postgresql_backup_script }}"
+        owner: root
+        group: root
+        mode: 0755
+
+    - name: Create postgresql backup cron entry
+      ansible.builtin.cron:
+        name: "benji postgresql dump"
+        minute: "{{ benji_backup_postgresql_schedule.minute }}"
+        hour: "{{ benji_backup_postgresql_schedule.hour }}"
+        user: root
+        job: "{{ benji_backup_base_path }}/scripts/pgsql_dump.sh"
+        cron_file: pgsql_backup
+      tags: pgsql-scripts
 
 - name: Deploy ceph.sh script from benji repo
   ansible.builtin.copy:
