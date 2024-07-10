@@ -92,7 +92,7 @@
     ansible_python_interpreter: "{{ benji_backup_python_interpreter_docker_compose }}"
   register: _containers_boot
 
-- name: Wait 10secs to let postgres boot if this is the first time it boots
+- name: Wait 10secs to let postgres boot if containers have been started/restarted
   ansible.builtin.pause:
     seconds: 10
   when: _containers_boot.changed
@@ -103,7 +103,6 @@
   ansible.builtin.shell:
     cmd: "docker exec {{ benji_backup_container_name }} benji database-init && touch {{ benji_backup_postgres_data_dir }}/../benji_db_initialized"
     creates: "{{ benji_backup_postgres_data_dir }}/../benji_db_initialized"
-  ignore_errors: true
 
 - name: Configure postgresql backup
   tags: pgsql-scripts
