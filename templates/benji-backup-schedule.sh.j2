@@ -1,0 +1,7 @@
+{% for volume in benji_backup_volumes_to_backup %}
+# VM {{ volume.vm_name }}
+# VOLUME {{ volume.volume_name }} 
+# TENANT {{ volume.tenant_name }} 
+benji-backup {{ volume.ceph_pool }} {{ volume.volume_id }}
+
+{% endfor %}

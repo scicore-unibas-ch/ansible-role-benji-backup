@@ -135,3 +135,26 @@
         job: "{{ benji_backup_database_cleanup_command }}"
         cron_file: benji_database_backup_cleanup
       tags: cronjob
+
+- name: Configure RBD backups
+  when: benji_backup_volumes_to_backup | length > 0
+  tags: benji_backup_schedule
+  block:
+
+    - name: Create benji rbd backup schedule script
+      ansible.builtin.template:
+        src: benji-backup-schedule.sh.j2
+        dest: "{{ benji_backup_base_path }}/scripts/benji-backup-schedule.sh"
+        owner: root
+        group: root
+        mode: 0755
+
+    - name: Create benji rbd backup cron entry
+      ansible.builtin.cron:
+        name: "benji rbd backup"
+        minute: "{{ benji_backup_rbd_backup_schedule.minute }}"
+        hour: "{{ benji_backup_rbd_backup_schedule.hour }}"
+        day: "{{ benji_backup_rbd_backup_schedule.day }}"
+        user: root
+        job: "{{ benji_backup_base_path }}/scripts/benji-backup-schedule.sh"
+        cron_file: benji_rbd_backup
