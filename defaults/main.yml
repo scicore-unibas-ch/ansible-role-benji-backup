@@ -69,6 +69,13 @@ benji_backup_postgresql_schedule:
   minute: 0
   hour: 1
 
+## When and how PGSQL database backups are deleted
+benji_backup_database_cleanup_command: "find {{ benji_backup_backups_destination_path }}/pgsql -type f -mtime +15 -exec rm {} \\;"
+benji_backup_database_cleanup_schedule:
+  minute: 0
+  hour: 3
+  day: "*"
+
 benji_backup_create_venv_for_ansible: true
 benji_backup_venv_ansible_docker_compose: "{{ benji_backup_base_path }}/venv_ansible"
 # this points to a python venv with the docker-compose library installed

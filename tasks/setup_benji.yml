@@ -124,3 +124,14 @@
         user: root
         job: "{{ benji_backup_base_path }}/scripts/pgsql_dump.sh"
         cron_file: pgsql_backup
+
+    - name: Create benji PGSQL database backup cleanup cron entry
+      ansible.builtin.cron:
+        name: "benji database backup cleanup"
+        minute: "{{ benji_backup_database_cleanup_schedule.minute }}"
+        hour: "{{ benji_backup_database_cleanup_schedule.hour }}"
+        day: "{{ benji_backup_database_cleanup_schedule.day }}"
+        user: root
+        job: "{{ benji_backup_database_cleanup_command }}"
+        cron_file: benji_database_backup_cleanup
+      tags: cronjob
