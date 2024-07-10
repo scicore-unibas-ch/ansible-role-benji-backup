@@ -7,8 +7,9 @@ Deploy benji backup using docker containers.
 
 This role assumes docker daemon is already installed in the destination host.
 
-You also need the ansible collection `community.docker.docker_compose`.  You
-can install it with `ansible-galaxy collection install community.docker`)
+You also need the ansible collection `community.docker.docker_compose`. This collection
+is probably already available in your system if you have installed ansible but you can 
+also install it with `ansible-galaxy collection install community.docker`)
 
 
 # Some examples
@@ -44,7 +45,7 @@ You also have to identify to which ceph pool you have to restore the volume. Det
 When booting a VM from an image the root volume will be stored in ceph pool `vms`. The volume name
 is in format "${vm_id}_disk" e.g. 
 ```
-benji-backups$> sudo rbd -p vms ls
+benji-backups$> sudo rbd --id benji -p vms ls
 0a5f5bb5-3870-47a5-9925-934065f29bac_disk
 ```
 
@@ -52,7 +53,7 @@ benji-backups$> sudo rbd -p vms ls
 
 Openstack volumes are stored in ceph pool `volumes`. The volume name format is "${volume_id}" e.g.
 ```
-benji-backups$> sudo rbd -p volumes ls
+benji-backups$> sudo rbd --ide benji -p volumes ls
 e30044c2-61b7-40c3-805c-26a7ece9b2fb
 
 ```
@@ -66,3 +67,7 @@ $3 = volume name (this must exist in the pool and it will be overriden with the 
 
 $> benji-restore -f volumes/volume-29c99562-9882-481f-aecc-d5b2d104057a-t6ueth volumes e30044c2-61b7-40c3-825c-24a7e4ee9b2fb
 ```
+
+# License
+
+Apache 2.0
