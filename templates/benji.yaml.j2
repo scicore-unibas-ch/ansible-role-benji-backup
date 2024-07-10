@@ -11,7 +11,7 @@ storages:
       simultaneousWrites: 10
       path: {{ benji_backup_backups_destination_path }}
 ios:
-  - name: rbd
+  - name: rbd  # functions defined in ceph.sh expects this I/O to be named "rbd"
     module: rbd
     configuration:
       simultaneousReads: 10
