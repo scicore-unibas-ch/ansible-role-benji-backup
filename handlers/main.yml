@@ -4,6 +4,6 @@
 - name: Restart the containers
   community.docker.docker_compose:
     project_src: "{{ benji_backup_base_path }}/config"
-    state: restarted
+    restarted: true
   vars:
     ansible_python_interpreter: "{{ benji_backup_python_interpreter_docker_compose }}"
