@@ -1,5 +1,8 @@
 #!/usr/bin/env bash
 
+# This script is a modification of https://github.com/elemental-lf/benji/blob/v0.17.0/scripts/ceph.sh
+# adding support to use a custom ceph client when accessing ceph rbd
+
 set -o pipefail
 
 : "${BENJI_INSTANCE:=rbd-backups}"
