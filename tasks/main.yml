@@ -7,6 +7,7 @@
 
 - name: Create a python venv for ansible module community.docker.docker_compose
   ansible.builtin.import_tasks: setup_python_venv_for_docker_compose.yml
+  when: benji_backup_create_venv_for_ansible | bool
 
 - name: Setup benji
   ansible.builtin.import_tasks: setup_benji.yml
